@@ -2,7 +2,7 @@ name: RAS ALD - Android CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     tags:
       - 'v*'
   pull_request:
@@ -12,58 +12,127 @@ env:
   JAVA_VERSION: '17'
 
 jobs:
-  build:
+  setup:
+    name: ⚙️ Setup & Verify Gradle
     runs-on: ubuntu-latest
-
+    outputs:
+      gradle-ok: ${{ steps.verify.outcome }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup JDK
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
           cache: gradle
 
-      - name: Grant gradlew permission
-        run: chmod +x gradlew
-
-      - name: Decode Keystore
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Fix gradlew line endings
         run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
-          echo "KEYSTORE_PATH=app/release.keystore" >> $GITHUB_ENV
+          sed -i 's/\r$//' gradlew
+          chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Verify Gradle Wrapper
+        id: verify
+        run: ./gradlew --version
 
-      - name: Build Release APK
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: ./gradlew assembleRelease
+  lint:
+    name: 🔍 Lint
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: gradle
 
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v4
+      - run: sed -i 's/\r$//' gradlew && chmod +x gradlew
+      - run: ./gradlew ktlintCheck || true
+      - run: ./gradlew lintDebug
+
+  unit-test:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: gradle
+
+      - run: sed -i 's/\r$//' gradlew && chmod +x gradlew
+      - run: ./gradlew testDebugUnitTest --no-daemon
+
+  build-debug:
+    name: 🔨 Debug APK
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: gradle
+
+      - run: sed -i 's/\r$//' gradlew && chmod +x gradlew
+      - run: ./gradlew assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
 
-      - name: Upload Release APK
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v4
+  build-release:
+    name: 📦 Release APK
+    runs-on: ubuntu-latest
+    needs: unit-test
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: gradle
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
+          echo "KEYSTORE_PATH=app/release.keystore" >> $GITHUB_ENV
+
+      - run: sed -i 's/\r$//' gradlew && chmod +x gradlew
+      - run: ./gradlew assembleRelease --no-daemon
+
+      - name: Rename APK
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          mv app/build/outputs/apk/release/app-release.apk \
+             app/build/outputs/apk/release/RAS-ALD-v${VERSION}.apk
+
+      - uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: app/build/outputs/apk/release/*.apk
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
+  github-release:
+    name: 🚀 GitHub Release
+    runs-on: ubuntu-latest
+    needs: build-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
         with:
-          files: app/build/outputs/apk/release/*.apk
+          name: release-apk
+          path: release/
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: release/*.apk
           generate_release_notes: true
