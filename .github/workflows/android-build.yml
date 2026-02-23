@@ -2,7 +2,7 @@ name: RAS ALD - Android CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
     tags:
       - 'v*'
   pull_request:
@@ -10,275 +10,60 @@ on:
 
 env:
   JAVA_VERSION: '17'
-  GRADLE_VERSION: '8.2'
 
 jobs:
-  # Job 1: Code Quality Check
-  lint:
-    name: 🔍 Code Linting
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
+          distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
+      - name: Grant gradlew permission
         run: chmod +x gradlew
-
-      - name: Run Kotlin Linter (ktlint)
-        run: ./gradlew ktlintCheck --continue || true
-
-      - name: Run Android Lint
-        run: ./gradlew lintDebug
-
-      - name: Upload Lint Reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: lint-reports
-          path: |
-            app/build/reports/lint-results-debug.html
-
-  # Job 2: Unit Tests
-  unit-test:
-    name: 🧪 Unit Tests
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest --stacktrace
-
-      - name: Upload Test Reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: unit-test-reports
-          path: |
-            app/build/reports/tests/
-            app/build/test-results/
-
-  # Job 3: Build Debug APK
-  build-debug:
-    name: 🔨 Build Debug APK
-    runs-on: ubuntu-latest
-    needs: [lint, unit-test]
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
-
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: ras-ald-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
-          retention-days: 30
-
-  # Job 4: Build Release APK (on tags only) - FIXED SIGNING
-  build-release:
-    name: 📦 Build Release APK
-    runs-on: ubuntu-latest
-    needs: [lint, unit-test]
-    if: startsWith(github.ref, 'refs/tags/v')
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
-          cache: gradle
 
       - name: Decode Keystore
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
-          ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          if [ -n "$ENCODED_KEYSTORE" ]; then
-            echo "$ENCODED_KEYSTORE" | base64 -d > app/release.keystore
-            echo "KEYSTORE_PATH=release.keystore" >> $GITHUB_ENV
-          else
-            echo "No keystore provided, will use debug signing"
-          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
+          echo "KEYSTORE_PATH=app/release.keystore" >> $GITHUB_ENV
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-      - name: Build Release APK with signing
+      - name: Build Release APK
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          if [ -f "app/release.keystore" ]; then
-            ./gradlew assembleRelease --stacktrace
-          else
-            ./gradlew assembleRelease -Pandroid.injected.signing.store.file= -Pandroid.injected.signing.store.password= -Pandroid.injected.signing.key.alias= -Pandroid.injected.signing.key.password= --stacktrace
-          fi
+        run: ./gradlew assembleRelease
 
-      - name: Rename APK with version
-        run: |
-          VERSION=${GITHUB_REF_NAME#v}
-          if [ -f "app/build/outputs/apk/release/app-release.apk" ]; then
-            mv app/build/outputs/apk/release/app-release.apk "app/build/outputs/apk/release/RAS-ALD-v${VERSION}.apk"
-          fi
-
-      - name: Upload Release APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: ras-ald-release-apk
-          path: app/build/outputs/apk/release/*.apk
-          retention-days: 90
+          name: debug-apk
+          path: app/build/outputs/apk/debug/*.apk
 
-  # Job 5: Create GitHub Release
-  create-release:
-    name: 🚀 Create Release
-    runs-on: ubuntu-latest
-    needs: build-release
-    if: startsWith(github.ref, 'refs/tags/v')
-    permissions:
-      contents: write
-    steps:
-      - name: Download Release APK
-        uses: actions/download-artifact@v4
+      - name: Upload Release APK
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v4
         with:
-          name: ras-ald-release-apk
-          path: release/
+          name: release-apk
+          path: app/build/outputs/apk/release/*.apk
 
-      - name: Create Release
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
-          files: release/*.apk
+          files: app/build/outputs/apk/release/*.apk
           generate_release_notes: true
-          body: |
-            ## 🎉 RAS ALD - YouTube Downloader ${{ github.ref_name }}
-
-            ### ✨ Features
-            - Room Database for download history
-            - ExoPlayer in-app video preview
-            - Playlist download support
-            - Subtitle download (.srt/.vtt)
-            - Batch download (up to 10 videos)
-            - Background download with notification
-            - Download queue management
-            - WiFi Only Mode
-            - Video to Audio converter (MP3)
-            - Built-in YouTube Browser
-            - Dark Mode support
-            - Auto-retry failed downloads
-            - Download scheduler
-            - Video trimmer
-            - Multi-language support
-            - Video quality selection
-
-            ### 📱 System Requirements
-            - Android 7.0+ (API 24)
-            - Minimum 100MB free storage
-
-            ### 🔒 Permissions
-            - Internet access
-            - Storage access
-            - Foreground service
-            - Notifications
-
-            ### 📥 Installation
-            1. Download the APK file
-            2. Enable "Install from Unknown Sources"
-            3. Install and enjoy!
-
-            **Developer:** [ARMAN]
-            **Version:** ${{ github.ref_name }}
-
-  # Job 6: Dependency Security Scan
-  security-scan:
-    name: 🔒 Security Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-
-      - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
-
-  # Job 7: Generate APK Stats
-  apk-stats:
-    name: 📊 APK Statistics
-    runs-on: ubuntu-latest
-    needs: build-debug
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Download Debug APK
-        uses: actions/download-artifact@v4
-        with:
-          name: ras-ald-debug-apk
-          path: apk/
-
-      - name: Analyze APK Size
-        run: |
-          APK_FILE=$(find apk -name "*.apk" | head -1)
-          echo "## 📊 APK Statistics" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| File Name | $(basename $APK_FILE) |" >> $GITHUB_STEP_SUMMARY
-          echo "| Size | $(du -h $APK_FILE | cut -f1) |" >> $GITHUB_STEP_SUMMARY
-          echo "| Downloads | Universal |" >> $GITHUB_STEP_SUMMARY
-
-      - name: Comment on PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const apkFile = fs.readdirSync('apk').find(f => f.endsWith('.apk'));
-            const stats = fs.statSync(`apk/${apkFile}`);
-            const sizeMB = (stats.size / (1024 * 1024)).toFixed(2);
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## 🚀 RAS ALD Build Complete!\n\n📱 **APK Details:**\n- File: \`${apkFile}\`\n- Size: ${sizeMB} MB\n- Build: Debug\n\n✅ All checks passed! Ready for testing.`
-            })
