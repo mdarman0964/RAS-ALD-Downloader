@@ -1,10 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ##############################################################################
 ## Gradle start up script for POSIX
 ##############################################################################
 
-# Attempt to set APP_HOME
 PRG="$0"
 while [ -h "$PRG" ]; do
   ls=$(ls -ld "$PRG")
@@ -15,15 +14,17 @@ while [ -h "$PRG" ]; do
     PRG=$(dirname "$PRG")"/$link"
   fi
 done
+
 SAVED="$(pwd)"
-cd "$(dirname \"$PRG\")/" >/dev/null
+cd "$(dirname "$PRG")" >/dev/null
 APP_HOME="$(pwd -P)"
 cd "$SAVED" >/dev/null
 
 APP_NAME="Gradle"
 APP_BASE_NAME=$(basename "$0")
 
-DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+# ✅ FIXED — NO QUOTES INSIDE
+DEFAULT_JVM_OPTS="-Xmx64m -Xms64m"
 
 MAX_FD="maximum"
 
@@ -32,13 +33,13 @@ msys=false
 darwin=false
 nonstop=false
 case "$(uname)" in
-CYGWIN*) cygwin=true ;;
-Darwin*) darwin=true ;;
-MINGW*) msys=true ;;
-NONSTOP*) nonstop=true ;;
+  CYGWIN*) cygwin=true ;;
+  Darwin*) darwin=true ;;
+  MINGW*) msys=true ;;
+  NONSTOP*) nonstop=true ;;
 esac
 
-CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+CLASSPATH="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
 
 if [ -n "$JAVA_HOME" ]; then
   if [ -x "$JAVA_HOME/jre/sh/java" ]; then
@@ -52,21 +53,21 @@ if [ -n "$JAVA_HOME" ]; then
   fi
 else
   JAVACMD="java"
-  which java >/dev/null 2>&1 || {
-    echo "ERROR: JAVA_HOME is not set"
+  command -v java >/dev/null 2>&1 || {
+    echo "ERROR: JAVA_HOME is not set and no java command found"
     exit 1
   }
 fi
 
-if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ]; then
+if [ "$cygwin" = "false" ] && [ "$darwin" = "false" ] && [ "$nonstop" = "false" ]; then
   MAX_FD_LIMIT=$(ulimit -H -n)
   if [ $? -eq 0 ]; then
-    [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ] && MAX_FD="$MAX_FD_LIMIT"
-    ulimit -n $MAX_FD
+    [ "$MAX_FD" = "maximum" ] && MAX_FD="$MAX_FD_LIMIT"
+    ulimit -n "$MAX_FD"
   fi
 fi
 
-if [ "$cygwin" = "true" -o "$msys" = "true" ]; then
+if [ "$cygwin" = "true" ] || [ "$msys" = "true" ]; then
   APP_HOME=$(cygpath --path --mixed "$APP_HOME")
   CLASSPATH=$(cygpath --path --mixed "$CLASSPATH")
   JAVACMD=$(cygpath --unix "$JAVACMD")
