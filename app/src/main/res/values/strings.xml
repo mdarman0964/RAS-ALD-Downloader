@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Info -->
+    <string name="app_name">RAS ALD</string>
+    <string name="app_full_name">RAS ALD - YouTube Downloader</string>
+    <string name="version">Version</string>
+    <string name="developer">Developer</string>
+    <string name="about_description">A powerful YouTube video downloader with playlist support, subtitles, and more.</string>
+
+    <!-- Navigation -->
+    <string name="settings">Settings</string>
+    <string name="download_history">Download History</string>
+    <string name="download_queue">Download Queue</string>
+    <string name="youtube_browser">YouTube Browser</string>
+    <string name="about">About</string>
+
+    <!-- Actions -->
+    <string name="add_download">Add Download</string>
+    <string name="download">Download</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete">Delete</string>
+    <string name="remove">Remove</string>
+    <string name="clear">Clear</string>
+    <string name="paste">Paste</string>
+    <string name="grant">Grant</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="open">Open</string>
+    <string name="share">Share</string>
+    <string name="share_via">Share via</string>
+    <string name="open_with">Open with</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="retry">Retry</string>
+    <string name="preview">Preview</string>
+
+    <!-- Status -->
+    <string name="pending">Pending</string>
+    <string name="queued">Queued</string>
+    <string name="downloading">Downloading</string>
+    <string name="paused">Paused</string>
+    <string name="paused_format">Paused (%d%%)</string>
+    <string name="completed">Completed</string>
+    <string name="failed">Failed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="merging">Merging…</string>
+    <string name="converting">Converting…</string>
+
+    <!-- Download -->
+    <string name="configure_download">Configure Download</string>
+    <string name="download_details">Download Details</string>
+    <string name="download_started">Download started</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="download_completed">Download completed!</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="download_cancelled">Download cancelled</string>
+    <string name="download_added_to_queue">Download added to queue</string>
+    <string name="cancel_download">Cancel Download</string>
+    <string name="cancel_download_confirmation">Are you sure you want to cancel this download?</string>
+    <string name="delete_download">Delete Download</string>
+    <string name="delete_download_confirmation">Are you sure you want to delete this download?</string>
+    <string name="delete_from_history">Delete from History</string>
+    <string name="delete_history_confirmation">Delete this item from history?</string>
+    <string name="clear_all_history">Clear All History</string>
+    <string name="clear_history_confirmation">Clear all download history? This cannot be undone.</string>
+    <string name="history_cleared">History cleared</string>
+    <string name="remove_from_queue">Remove from Queue</string>
+    <string name="remove_queue_confirmation">Remove this download from queue?</string>
+    <string name="cancel_all_downloads">Cancel All Downloads</string>
+    <string name="cancel_all_confirmation">Cancel all active downloads?</string>
+    <string name="all_downloads_paused">All downloads paused</string>
+    <string name="all_downloads_resumed">All downloads resumed</string>
+    <string name="all_downloads_cancelled">All downloads cancelled</string>
+    <string name="retrying_failed_downloads">Retrying failed downloads</string>
+    <string name="removed">Removed</string>
+    <string name="deleted">Deleted</string>
+
+    <!-- Queue -->
+    <string name="items_count">%d items</string>
+    <string name="queue_status_format">Downloading: %d | Queued: %d | Pending: %d</string>
+    <string name="active_downloads">Active Downloads</string>
+    <string name="active_downloads_count">%d active downloads</string>
+
+    <!-- Empty States -->
+    <string name="no_downloads">No downloads</string>
+    <string name="no_downloads_yet">No downloads yet</string>
+    <string name="add_download_hint">Tap + to add a download</string>
+    <string name="no_history">No download history</string>
+    <string name="no_queue_items">No items in queue</string>
+
+    <!-- Video Info -->
+    <string name="video_thumbnail">Video Thumbnail</string>
+    <string name="unknown_uploader">Unknown Channel</string>
+    <string name="views_format">%s views</string>
+    <string name="duration_format">%s</string>
+
+    <!-- Download Options -->
+    <string name="quality">Quality</string>
+    <string name="format">Format</string>
+    <string name="audio_format">Audio Format</string>
+    <string name="audio_only">Audio Only (MP3)</string>
+    <string name="download_subtitle">Download Subtitle</string>
+    <string name="subtitle_language">Subtitle Language</string>
+    <string name="download_playlist">Download Playlist</string>
+    <string name="download_playlist_format">Download all %d videos from "%s"</string>
+
+    <!-- Qualities -->
+    <string-array name="video_qualities">
+        <item>144p</item>
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+        <item>1440p</item>
+        <item>4K</item>
+        <item>8K</item>
+        <item>Best</item>
+    </string-array>
+
+    <!-- Formats -->
+    <string-array name="video_formats">
+        <item>MP4</item>
+        <item>WEBM</item>
+        <item>MKV</item>
+    </string-array>
+
+    <string-array name="audio_formats">
+        <item>MP3</item>
+        <item>M4A</item>
+        <item>OPUS</item>
+        <item>WAV</item>
+    </string-array>
+
+    <!-- Browser -->
+    <string name="open_browser">Open Browser</string>
+    <string name="loading_error">Error loading page</string>
+    <string name="not_a_video_page">Not a video page</string>
+
+    <!-- Permissions -->
+    <string name="permission_required">Permission Required</string>
+    <string name="storage_permission_rationale">Storage permission is required to save downloaded videos.</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="storage_permission_denied_message">Storage permission is required. Please enable it in settings.</string>
+    <string name="storage_permission_granted">Storage permission granted</string>
+
+    <!-- Notifications -->
+    <string name="channel_download_name">Downloads</string>
+    <string name="channel_download_description">Shows download progress</string>
+    <string name="channel_general_name">General</string>
+    <string name="channel_general_description">General notifications</string>
+    <string name="download_service_running">Download service is running</string>
+
+    <!-- Errors -->
+    <string name="invalid_url">Invalid URL</string>
+    <string name="failed_to_extract_info">Failed to extract video info</string>
+    <string name="error_occurred">An error occurred</string>
+    <string name="playback_error">Playback error</string>
+
+    <!-- Settings -->
+    <string name="appearance">Appearance</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_summary">Enable dark theme</string>
+    <string name="language">Language</string>
+    <string name="language_summary">Select app language</string>
+    
+    <string name="download_settings">Download Settings</string>
+    <string name="download_path">Download Path</string>
+    <string name="default_quality">Default Quality</string>
+    <string name="default_format">Default Format</default>
+    <string name="wifi_only">WiFi Only</string>
+    <string name="wifi_only_summary">Download only on WiFi</string>
+    <string name="auto_retry">Auto Retry</string>
+    <string name="auto_retry_summary">Automatically retry failed downloads</string>
+    <string name="max_retry">Max Retry Count</string>
+    <string name="concurrent_downloads">Concurrent Downloads</string>
+    <string name="notification_sound">Notification Sound</string>
+    <string name="show_thumbnail">Show Thumbnails</string>
+    <string name="keep_history">Keep History</string>
+    <string name="extract_audio">Extract Audio</string>
+    <string name="extract_audio_summary">Download audio only</string>
+    <string name="audio_quality">Audio Quality</string>
+    <string name="embed_subtitle">Embed Subtitle</string>
+    <string name="write_thumbnail">Save Thumbnail</string>
+    <string name="write_info_json">Save Info JSON</string>
+
+    <!-- Languages -->
+    <string-array name="languages">
+        <item>English</item>
+        <item>বাংলা (Bengali)</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>en</item>
+        <item>bn</item>
+    </string-array>
+
+    <!-- Dark Mode -->
+    <string-array name="dark_mode_options">
+        <item>System Default</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="dark_mode_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+</resources>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorPrimaryLight">#FF8A65</color>
+    <color name="colorAccent">#FF9800</color>
+
+    <!-- Background Colors -->
+    <color name="background_light">#FAFAFA</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="surface_dark">#1E1E1E</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary_light">#212121</color>
+    <color name="text_secondary_light">#757575</color>
+    <color name="text_hint_light">#BDBDBD</color>
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B3B3B3</color>
+    <color name="text_hint_dark">#666666</color>
+
+    <!-- Status Colors -->
+    <color name="status_pending">#9E9E9E</color>
+    <color name="status_queued">#607D8B</color>
+    <color name="status_downloading">#2196F3</color>
+    <color name="status_paused">#FF9800</color>
+    <color name="status_completed">#4CAF50</color>
+    <color name="status_failed">#F44336</color>
+    <color name="status_cancelled">#9E9E9E</color>
+    <color name="status_merging">#9C27B0</color>
+    <color name="status_converting">#673AB7</color>
+
+    <!-- Button Colors -->
+    <color name="play_button_color">#4CAF50</color>
+    <color name="pause_button_color">#FF9800</color>
+    <color name="resume_button_color">#2196F3</color>
+    <color name="cancel_button_color">#F44336</color>
+    <color name="retry_button_color">#FF5722</color>
+    <color name="share_button_color">#2196F3</color>
+    <color name="delete_button_color">#F44336</color>
+
+    <!-- Other Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="ripple">#1F000000</color>
+
+    <!-- FAB Colors -->
+    <color name="browser_fab_color">#2196F3</color>
+    <color name="active_download_bg">#2196F3</color>
+
+    <!-- Progress Bar Colors -->
+    <color name="progress_background">#E0E0E0</color>
+    <color name="progress_primary">#FF5722</color>
+    <color name="progress_secondary">#FF8A65</color>
+
+    <!-- Card Colors -->
+    <color name="card_background_light">#FFFFFF</color>
+    <color name="card_background_dark">#1E1E1E</color>
+    <color name="card_stroke_light">#E0E0E0</color>
+    <color name="card_stroke_dark">#333333</color>
+
+    <!-- Error Colors -->
+    <color name="error_light">#B00020</color>
+    <color name="error_dark">#CF6679</color>
+
+    <!-- Success Colors -->
+    <color name="success_light">#4CAF50</color>
+    <color name="success_dark">#81C784</color>
+
+    <!-- Warning Colors -->
+    <color name="warning_light">#FF9800</color>
+    <color name="warning_dark">#FFB74D</color>
+
+    <!-- Info Colors -->
+    <color name="info_light">#2196F3</color>
+    <color name="info_dark">#64B5F6</color>
+</resources>

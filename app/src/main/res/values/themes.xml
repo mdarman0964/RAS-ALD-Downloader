@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="Theme.RasAld" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        
+        <!-- Material3 Colors -->
+        <item name="colorPrimaryContainer">@color/colorPrimaryLight</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryContainer">@color/colorAccent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        
+        <!-- Background -->
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/surface_light</item>
+        <item name="colorOnSurface">@color/text_primary_light</item>
+        
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        
+        <!-- Action Bar -->
+        <item name="actionBarStyle">@style/Widget.RasAld.ActionBar</item>
+        
+        <!-- Toolbar -->
+        <item name="toolbarStyle">@style/Widget.RasAld.Toolbar</item>
+        
+        <!-- Card -->
+        <item name="cardViewStyle">@style/Widget.RasAld.CardView</item>
+        
+        <!-- FAB -->
+        <item name="floatingActionButtonStyle">@style/Widget.RasAld.FloatingActionButton</item>
+        
+        <!-- Text Input -->
+        <item name="textInputStyle">@style/Widget.RasAld.TextInputLayout</item>
+        
+        <!-- Progress Bar -->
+        <item name="android:progressBarStyleHorizontal">@style/Widget.RasAld.ProgressBar</item>
+        
+        <!-- Dialog -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.RasAld.MaterialAlertDialog</item>
+        
+        <!-- Snackbar -->
+        <item name="snackbarStyle">@style/Widget.RasAld.Snackbar</item>
+        
+        <!-- Ripple -->
+        <item name="android:colorControlHighlight">@color/ripple</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="Theme.RasAld.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/background_dark</item>
+        <item name="colorSurface">@color/surface_dark</item>
+        <item name="colorOnSurface">@color/text_primary_dark</item>
+        <item name="android:statusBarColor">@color/background_dark</item>
+        <item name="android:navigationBarColor">@color/background_dark</item>
+    </style>
+
+    <!-- Fullscreen Theme for Player -->
+    <style name="Theme.RasAld.Fullscreen" parent="Theme.RasAld">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+
+    <!-- AppBar Overlay -->
+    <style name="Theme.RasAld.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!-- Popup Overlay -->
+    <style name="Theme.RasAld.PopupOverlay" parent="ThemeOverlay.Material3.Light">
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <!-- Action Bar -->
+    <style name="Widget.RasAld.ActionBar" parent="Widget.Material3.ActionBar.Solid">
+        <item name="background">@color/colorPrimary</item>
+        <item name="titleTextStyle">@style/TextAppearance.RasAld.ActionBar.Title</item>
+        <item name="subtitleTextStyle">@style/TextAppearance.RasAld.ActionBar.Subtitle</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="Widget.RasAld.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="subtitleTextColor">@color/white</item>
+        <item name="navigationIconTint">@color/white</item>
+    </style>
+
+    <!-- Card View -->
+    <style name="Widget.RasAld.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <!-- FAB -->
+    <style name="Widget.RasAld.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <!-- Text Input Layout -->
+    <style name="Widget.RasAld.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="hintTextColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/text_hint_light</item>
+    </style>
+
+    <!-- Progress Bar -->
+    <style name="Widget.RasAld.ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
+        <item name="android:minHeight">4dp</item>
+        <item name="android:maxHeight">4dp</item>
+    </style>
+
+    <!-- Snackbar -->
+    <style name="Widget.RasAld.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="backgroundTint">@color/surface_dark</item>
+    </style>
+
+    <!-- Alert Dialog -->
+    <style name="ThemeOverlay.RasAld.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSurface">@color/surface_light</item>
+    </style>
+
+    <!-- Text Appearances -->
+    <style name="TextAppearance.RasAld.ActionBar.Title" parent="TextAppearance.Material3.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.RasAld.ActionBar.Subtitle" parent="TextAppearance.Material3.ActionBar.Subtitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.RasAld.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.RasAld.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.RasAld.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+</resources>
