@@ -2,29 +2,6 @@ name: RAS ALD - Android CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
-    tags:
-      - 'v*'
-  pull_request:
-    branches: [ main ]
-
-env:
-  JAVA_VERSION: '17'
-
-jobs:
-  setup:
-    name: ⚙️ Setup & Verify Gradle
-    runs-on: ubuntu-latest
-    outputs:
-      gradle-ok: ${{ steps.verify.outcome }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK
-name: RAS ALD - Android CI/CD
-
-on:
-  push:
     branches: [ main ]
     tags:
       - 'v*'
@@ -136,8 +113,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          ./gradlew assembleRelease
+        run: ./gradlew assembleRelease
 
       - name: Rename APK
         run: |
